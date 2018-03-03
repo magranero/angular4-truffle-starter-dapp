@@ -110,13 +110,18 @@ contract TraceabilityOfFairTrade {
         _productStatus = uint256(products[_idProduct].productStatus);
         return (_productName,_productStatus);
     }
-    function getNumberOfProducts (uint256 _idProduct) returns (uint _numberOfProducts) {
+    function getNumberOfProducts () returns (uint256 _numberOfProducts) {
         _numberOfProducts = idProductIndex;
         return _numberOfProducts;
     }
-    function getNumberOfProductsByState (uint256 _idProduct) returns (uint _numberOfProducts) {
-        uint256 count;
+    function getNumberOfProductsByState (uint256 _productState) returns (uint _numberOfProducts) {
+        uint256 count = 0;
+        for (uint256 i=0;i<idProductIndex;i++){
+            if (products[i].productStatus == ProductStatus(_productState)) {
+                count +=1;
+            }
+        }
+        _numberOfProducts = count;
         return _numberOfProducts;
     }
-
 }
