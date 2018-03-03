@@ -11,4 +11,5 @@
 
 ## Adjustments
 Provide some ETH balance to new accounts (by default 100ETH but seems buggy)
+
 <b>ganache-cli -e 10000000</b> [or setsid ganache-cli -e 10000000]
