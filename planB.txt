@@ -2,5 +2,5 @@ Validator:
 RawMaterial: 
 Productor:
 Transporter:
-Distributor:
+Distributor: 0x37f004570043D37FC8f506Fe6904b228670077E8
 Consumer: 0x829506108108a43Fd1d0829DEc0E51a6e7d5dF82
