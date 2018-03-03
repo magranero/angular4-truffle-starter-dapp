@@ -146,6 +146,7 @@ export class AppComponent {
         this.setStatus('Error sending coin; see log.');
       });
   };
+  
 
   getNumberOfProducts = () => {
     const productName = this.productName;
