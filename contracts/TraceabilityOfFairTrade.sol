@@ -80,13 +80,13 @@ contract TraceabilityOfFairTrade {
     }
 // MAIN CONSTRUCTOR
     function TraceabilityOfFairTrade ()  {
-        owner = 0x467c8702ac386528994E2C85ceCE318b0D6e632C;
-        validator = 0x467c8702ac386528994E2C85ceCE318b0D6e632C;
-        rawMaterials = 0x467c8702ac386528994E2C85ceCE318b0D6e632C;
-        productor = 0x467c8702ac386528994E2C85ceCE318b0D6e632C;
-        transporter = 0x467c8702ac386528994E2C85ceCE318b0D6e632C;
-        distributor = 0x467c8702ac386528994E2C85ceCE318b0D6e632C;
-        consumer = 0x467c8702ac386528994E2C85ceCE318b0D6e632C;
+        owner = 0x22D3aAc8892dE2Dc771677bA385c108041ef66a3;
+        validator = 0x27E590902e1891cd53D4cc4E7099cE705C1e7865;
+        rawMaterials = 0x95b71c6b93D6901F4D13c1639eeb1AD7F58Deb27;
+        productor = 0xD774F1a06C9C99bCe0684450F75c49C1F4299d2B;
+        transporter = 0xDC0661B52B8ed463523140DaE2f5f03fC767410f;
+        distributor = 0x37f004570043D37FC8f506Fe6904b228670077E8;
+        consumer = 0x829506108108a43Fd1d0829DEc0E51a6e7d5dF82;
         idProductIndex = 0;
     }
 // function to create a product
