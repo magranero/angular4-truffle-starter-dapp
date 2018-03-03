@@ -130,15 +130,13 @@ export class AppComponent {
     const receiver = this.state;
     let track;
 
-    this.setStatus('Initiating transaction... (please wait)');
-
     this.Tracking
       .deployed()
       .then(instance => {
         track = instance;
         return track.getProductName(this.sendingProduct, {
           from: this.account
-        });
+      });
       })
       .then(() => {
         this.setStatus('Transaction complete!');
