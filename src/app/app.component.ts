@@ -1,7 +1,8 @@
 import { Component, HostListener, NgZone } from '@angular/core';
 const Web3 = require('web3');
 const contract = require('truffle-contract');
-const traceabilityArtifacts = require('../../build/contracts/Traceability.json');
+const metaincoinArtifacts = require('../../build/contracts/MetaCoin.json');
+const traceabilityArtifacts = require('../../build/contracts/TraceabilityOfFairTrade.json');
 import { canBeNumber } from '../util/validation';
 
 declare var window: any;
@@ -12,7 +13,7 @@ declare var window: any;
 })
 export class AppComponent {
   MetaCoin = contract(metaincoinArtifacts);
-  Traceability = contract(traceabilityArtifacts);
+  Tracking = contract(traceabilityArtifacts);
 
   // TODO add proper types these variables
   account: any;
@@ -23,6 +24,8 @@ export class AppComponent {
   sendingAmount: number;
   productName: string;
   recipientAddress: string;
+  sendingProduct: number;
+  state: string;
   status: string;
   canBeNumber = canBeNumber;
 
@@ -57,8 +60,8 @@ export class AppComponent {
 
   onReady = () => {
     // Bootstrap the MetaCoin abstraction for Use.
+    this.Tracking.setProvider(this.web3.currentProvider);
     this.MetaCoin.setProvider(this.web3.currentProvider);
-    this.Traceability.setProvider(this.web3.currentProvider);
 
     // Get the initial account balance so it can be displayed.
     this.web3.eth.getAccounts((err, accs) => {
@@ -99,9 +102,9 @@ export class AppComponent {
       })
       .catch(e => {
         console.log(e);
-        this.setStatus('Error getting balance; see log.');
+        this.setStatus('');
       });
-      this.Traceability
+      this.Tracking
         .deployed()
         .then(instance => {
           meta = instance;
@@ -122,9 +125,34 @@ export class AppComponent {
     this.status = message;
   };
 
+  sendProduct = () => {
+    const amount = this.sendingProduct;
+    const receiver = this.state;
+    let track;
+
+    this.setStatus('Initiating transaction... (please wait)');
+
+    this.Tracking
+      .deployed()
+      .then(instance => {
+        track = instance;
+        return track.getProductName(this.sendingProduct, {
+          from: this.account
+        });
+      })
+      .then(() => {
+        this.setStatus('Transaction complete!');
+        this.refreshBalance();
+      })
+      .catch(e => {
+        console.log(e);
+        this.setStatus('');
+      });
+  };
+
   sendCoin = () => {
-    const amount = this.sendingAmount;
-    const receiver = this.recipientAddress;
+    const amount = this.sendingProduct;
+    const receiver = this.state;
     let meta;
 
     this.setStatus('Initiating transaction... (please wait)');
@@ -146,15 +174,15 @@ export class AppComponent {
         this.setStatus('Error sending coin; see log.');
       });
   };
-  
+
 
   getNumberOfProducts = () => {
     const productName = this.productName;
     let meta;
 
-    this.setName('Setting the new product... (please wait)');
+//    this.getNumberOfProducts('Setting the new product... (please wait)');
 
-    this.Traceability
+    this.Tracking
       .deployed()
       .then(instance => {
         meta = instance;

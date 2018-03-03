@@ -5,14 +5,14 @@
         Traceabilit of Fair Trade
       </h1>
       <h2 class="title">
-        You have <span class="is-medium has-underline">{{balance}} {{account}}</span>
+        Hello! you address is:  <span class="is-medium has-underline">{{account}}</span>
       </h2>
     </div>
   </div>
 </section>
 <br>
 <div class="container">
-  <h1 class="title">Send Metacoin</h1>
+  <h1 class="title">Send Tracking Information</h1>
   <h1 class="title is-4 is-info help">{{status}}</h1>
 
   <form #coinForm="ngForm">
@@ -20,14 +20,18 @@
       <label class="label">Id Product</label>
       <p class="control">
         <input
-          [(ngModel)]="sendingAmount"
+          [(ngModel)]="sendingProduct"
           class="input"
           type="text"
-          placeholder="50"
-          name="sendingAmount"
+          placeholder=""
+          name="sendingProduct"
           required
           #sendingAmountModel="ngModel">
-      </p>
+        <button
+          (click)="sendProduct()"
+          class="button is-primary">
+          Send Product
+        </button>
       <div *ngIf="sendingAmountModel.errors && (sendingAmountModel.dirty || sendingAmountModel.touched)"
            class="help is-danger">
           <p [hidden]="!sendingAmountModel.errors.required">
@@ -36,20 +40,20 @@
       </div>
       <div *ngIf="!sendingAmountModel.errors && (sendingAmountModel.dirty || sendingAmountModel.touched)"
            class="help is-danger">
-          <p [hidden]="canBeNumber(sendingAmount)">
+          <p [hidden]="canBeNumber(sendingProduct)">
             Must be a number
           </p>
       </div>
     </div>
     <div class="field">
-      <label class="label">To Address</label>
+      <label class="label">State</label>
       <p class="control">
         <input
-          [(ngModel)]="recipientAddress"
-          name="recipientAddress"
+          [(ngModel)]="state"
+          name="state"
           class="input"
           type="text"
-          placeholder="0x93e66d9baea28c17d9fc393b53e3fbdd76899dae"
+          placeholder=""
           name="recipientAddress"
           required
           #recipientAddressModel="ngModel"
@@ -63,7 +67,7 @@
       </div>
       <div *ngIf="!recipientAddressModel.errors && (recipientAddressModel.dirty || recipientAddressModel.touched)"
            class="help is-danger">
-          <p [hidden]="canBeNumber(recipientAddress)">
+          <p [hidden]="canBeNumber(state)">
             Must be a number
           </p>
       </div>
@@ -72,15 +76,19 @@
     <div class="field is-grouped">
       <p class="control">
         <button
+        [disabled]="!coinForm.valid"
+        (click)="sendCoin()"
+        class="button is-primary">
+        Done
+      </button>
+        <button
           [disabled]="!coinForm.valid"
           (click)="sendCoin()"
           class="button is-primary">
-          Send
+          Validate
         </button>
       </p>
     </div>
   </form>
-
-  <strong>Hint:</strong> open the browser developer console to view any errors and warnings.
 
 </div>

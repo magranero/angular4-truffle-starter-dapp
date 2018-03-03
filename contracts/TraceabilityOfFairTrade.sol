@@ -1,5 +1,5 @@
 pragma solidity ^0.4.0;
-    /* This contract was created by Mario Granero Burillo 
+    /* This contract was created by Mario Granero Burillo
     for the I HackETHon in THECUBEMADRID
     for the dAPP project TraceabilityOfFairTrade */
 contract TraceabilityOfFairTrade {
@@ -13,20 +13,20 @@ contract TraceabilityOfFairTrade {
     address distributor;
     address consumer;
     address validator;
-    
+
     uint256 idProductIndex;
 
 //The product cicle is described with this states
-    enum ProductStatus {notStarted, 
-                        rawMaterialExtracted, 
-                        rawMaterialExtractedValidation, 
-                        produced, 
-                        productionValidated, 
-                        transported, 
-                        transportValidated, 
-                        distributed, 
-                        distributionValidated, 
-                        consumed, 
+    enum ProductStatus {notStarted,
+                        rawMaterialExtracted,
+                        rawMaterialExtractedValidation,
+                        produced,
+                        productionValidated,
+                        transported,
+                        transportValidated,
+                        distributed,
+                        distributionValidated,
+                        consumed,
                         recicled}
 // Product structure
     struct Product {
@@ -35,7 +35,7 @@ contract TraceabilityOfFairTrade {
     }
 // Products collection of the contract
     mapping(uint256 => Product) products;
-    
+
 // MODIFIERS
 // This modifier inspect if sender is a validator of a process. In the future, each rol, will have their own validator
     modifier onlyValidator() {
@@ -79,14 +79,14 @@ contract TraceabilityOfFairTrade {
         }
     }
 // MAIN CONSTRUCTOR
-    function TraceabilityOfFairTrade (address _validator, address _rawMaterials, address _productor, address _transporter, address _distributor, address _consumer)  {
-        owner = msg.sender;
-        validator = _validator;
-        rawMaterials = _rawMaterials;
-        productor = _productor;
-        transporter = _transporter;
-        distributor = _distributor;
-        consumer = _consumer;
+    function TraceabilityOfFairTrade ()  {
+        owner = 0x467c8702ac386528994E2C85ceCE318b0D6e632C;
+        validator = 0x467c8702ac386528994E2C85ceCE318b0D6e632C;
+        rawMaterials = 0x467c8702ac386528994E2C85ceCE318b0D6e632C;
+        productor = 0x467c8702ac386528994E2C85ceCE318b0D6e632C;
+        transporter = 0x467c8702ac386528994E2C85ceCE318b0D6e632C;
+        distributor = 0x467c8702ac386528994E2C85ceCE318b0D6e632C;
+        consumer = 0x467c8702ac386528994E2C85ceCE318b0D6e632C;
         idProductIndex = 0;
     }
 // function to create a product
