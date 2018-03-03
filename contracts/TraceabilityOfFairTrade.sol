@@ -79,7 +79,12 @@ contract TraceabilityOfFairTrade {
         }
     }
 // MAIN CONSTRUCTOR
-    function TraceabilityOfFairTrade (address _validator, address _rawMaterials, address _productor, address _transporter, address _distributor, address _consumer)  {
+    function TraceabilityOfFairTrade   (address _validator, 
+                                        address _rawMaterials, 
+                                        address _productor, 
+                                        address _transporter, 
+                                        address _distributor, 
+                                        address _consumer)  {
         owner = msg.sender;
         validator = _validator;
         rawMaterials = _rawMaterials;
