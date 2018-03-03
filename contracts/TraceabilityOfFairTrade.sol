@@ -79,7 +79,7 @@ contract TraceabilityOfFairTrade {
         }
     }
 // MAIN CONSTRUCTOR
-    function TraceabilityOfFairTrade ()  {
+    function TraceabilityOfFairTrade (uint256 _idProduct)  {
         owner = 0x22D3aAc8892dE2Dc771677bA385c108041ef66a3;
         validator = 0x27E590902e1891cd53D4cc4E7099cE705C1e7865;
         rawMaterials = 0x95b71c6b93D6901F4D13c1639eeb1AD7F58Deb27;
@@ -87,7 +87,7 @@ contract TraceabilityOfFairTrade {
         transporter = 0xDC0661B52B8ed463523140DaE2f5f03fC767410f;
         distributor = 0x37f004570043D37FC8f506Fe6904b228670077E8;
         consumer = 0x829506108108a43Fd1d0829DEc0E51a6e7d5dF82;
-        idProductIndex = 0;
+        idProductIndex = _idProduct;
     }
 // function to create a product
     function newProduct (string _productName)  returns (uint256 _idProduct) {
