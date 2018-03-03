@@ -59,22 +59,22 @@ contract TraceabilityOfFairTrade {
 // This main function will change state making validations with only validator role
 // This main function will change to the next step with conditions and validations
     function processDone (uint256 idProduct) onlyParticipant() {
-        if ((msg.sender == rawMaterials)&&(products[idProduct].productStatus == ProductStatus(0))) {
+        if ((msg.sender == rawMaterials)&&(products[idProduct].productStatus == ProductStatus.notStarted)) {
             products[idProduct].productStatus = ProductStatus.rawMaterialExtracted;
         }
-        if ((msg.sender == productor)&&(products[idProduct].productStatus == ProductStatus(2))) {
+        if ((msg.sender == productor)&&(products[idProduct].productStatus == ProductStatus.rawMaterialExtractedValidation)) {
             products[idProduct].productStatus = ProductStatus.produced;
         }
-        if ((msg.sender == transporter)&&(products[idProduct].productStatus == ProductStatus(4))) {
+        if ((msg.sender == transporter)&&(products[idProduct].productStatus == ProductStatus.productionValidated)) {
             products[idProduct].productStatus = ProductStatus.transported;
         }
-        if ((msg.sender == distributor)&&(products[idProduct].productStatus == ProductStatus(6))) {
+        if ((msg.sender == distributor)&&(products[idProduct].productStatus == ProductStatus.transportValidated)) {
             products[idProduct].productStatus = ProductStatus.distributed;
         }
-        if ((msg.sender == consumer)&&(products[idProduct].productStatus == ProductStatus(8))) {
+        if ((msg.sender == consumer)&&(products[idProduct].productStatus == ProductStatus.distributionValidated)) {
             products[idProduct].productStatus = ProductStatus.consumed;
         }
-        if ((msg.sender == consumer)&&(products[idProduct].productStatus == ProductStatus(9))) {
+        if ((msg.sender == consumer)&&(products[idProduct].productStatus == ProductStatus.consumed)) {
             products[idProduct].productStatus = ProductStatus.recicled;
         }
     }
@@ -93,7 +93,7 @@ contract TraceabilityOfFairTrade {
     function newProduct (string _productName)  returns (uint256 _idProduct) {
         _idProduct = idProductIndex + 1;
         products[_idProduct].productName = _productName;
-        products[_idProduct].productStatus = ProductStatus(0);
+        products[_idProduct].productStatus = ProductStatus.notStarted;
         return (_idProduct);
     }
 // GETTERS
