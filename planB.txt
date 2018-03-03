@@ -1,6 +1,6 @@
 Validator: 
 RawMaterial: 
 Productor:
-Transporter:
+Transporter: 0xDC0661B52B8ed463523140DaE2f5f03fC767410f
 Distributor: 0x37f004570043D37FC8f506Fe6904b228670077E8
 Consumer: 0x829506108108a43Fd1d0829DEc0E51a6e7d5dF82
