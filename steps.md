@@ -1,7 +1,8 @@
-#TraceabilityOfFairTrade
+# TraceabilityOfFairTrade
 
 ------------------------		
-##Requirements
+## Requirements
+*git
 *npm
 *truffle
 *atom
