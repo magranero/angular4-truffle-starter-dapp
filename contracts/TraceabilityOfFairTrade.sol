@@ -1,5 +1,5 @@
 pragma solidity ^0.4.0;
-contract traceabilityOfFairTrade {
+contract TraceabilityOfFairTrade {
 
     address owner;
     address rawMaterials;
@@ -8,7 +8,7 @@ contract traceabilityOfFairTrade {
     address distributor;
     address consumer;
     address validator;
-    
+
     uint256 idProductIndex;
 
     enum ProductStatus {rawMaterials,rawMaterialsValidated, producted, productionValidated, transported, transportValidated, distributed, distributionValidated, consumed, consumptionValidated}
@@ -17,9 +17,9 @@ contract traceabilityOfFairTrade {
         string productName;
         ProductStatus productStatus;
     }
-    
+
     mapping(uint256 => Product) products;
-    
+
     modifier onlyValidator() {
         require(msg.sender == validator);
         _;
@@ -29,13 +29,13 @@ contract traceabilityOfFairTrade {
         require(products[idProduct].productStatus == ProductStatus(0));
         _;
     }
-    
+
     modifier onlyProductor(uint256 idProduct) {
         require(msg.sender == productor);
         require(products[idProduct].productStatus == ProductStatus(2));
         _;
     }
-    
+
     modifier onlyTransporter(uint256 idProduct) {
         require(msg.sender == transporter);
         require(products[idProduct].productStatus == ProductStatus(4));
@@ -52,12 +52,12 @@ contract traceabilityOfFairTrade {
         require(products[idProduct].productStatus == ProductStatus(8));
         _;
     }
-    
+
     function validateProcess(uint256 idProduct)  onlyValidator() {
         uint256 previousStatus = uint256(products[idProduct].productStatus);
         products[idProduct].productStatus = ProductStatus(previousStatus+1);
     }
-    
+
     function rawMaterialDone(uint256 idProduct)  onlyRawMaterials(idProduct) {
         products[idProduct].productStatus = ProductStatus.rawMaterials;
     }
@@ -71,7 +71,7 @@ contract traceabilityOfFairTrade {
     }
     function distributionDone(uint256 idProduct)  onlyDistributor(idProduct) {
         products[idProduct].productStatus = ProductStatus.distributed;
-  
+
     }
     function consumptionDone(uint256 idProduct)  onlyConsumer(idProduct) {
         products[idProduct].productStatus = ProductStatus.consumptionValidated;
@@ -81,7 +81,7 @@ contract traceabilityOfFairTrade {
         products[idProduct].productStatus = ProductStatus.consumptionValidated;
 
     }
-    
+
     function TraceabilityOfFairTrade(address _validator, address _rawMaterials, address _productor, address _transporter, address _distributor, address _consumer)  {
         owner = msg.sender;
         validator = _validator;

@@ -2,10 +2,10 @@
   <div class="hero-body">
     <div class="container">
       <h1 class="title is-1">
-        Metacoin ~ Angular4 + Truffle Starter Dapp
+        Traceabilit of Fair Trade
       </h1>
       <h2 class="title">
-        You have <span class="is-medium has-underline">{{balance}}</span> META
+        You have <span class="is-medium has-underline">{{balance}} {{account}}</span>
       </h2>
     </div>
   </div>
@@ -17,13 +17,13 @@
 
   <form #coinForm="ngForm">
     <div class="field">
-      <label class="label">Amount</label>
+      <label class="label">Id Product</label>
       <p class="control">
         <input
           [(ngModel)]="sendingAmount"
           class="input"
           type="text"
-          placeholder="95"
+          placeholder="50"
           name="sendingAmount"
           required
           #sendingAmountModel="ngModel">
