@@ -8,81 +8,63 @@ contract TraceabilityOfFairTrade {
     address distributor;
     address consumer;
     address validator;
-
+    
     uint256 idProductIndex;
 
-    enum ProductStatus {rawMaterials,rawMaterialsValidated, producted, productionValidated, transported, transportValidated, distributed, distributionValidated, consumed, consumptionValidated}
-
+    enum ProductStatus {notStarted, 
+                        rawMaterialExtracted, 
+                        rawMaterialExtractedValidation, 
+                        produced, 
+                        productionValidated, 
+                        transported, 
+                        transportValidated, 
+                        distributed, 
+                        distributionValidated, 
+                        consumed, 
+                        recicled}
     struct Product {
         string productName;
         ProductStatus productStatus;
     }
-
     mapping(uint256 => Product) products;
-
+    
     modifier onlyValidator() {
         require(msg.sender == validator);
         _;
     }
-    modifier onlyRawMaterials(uint256 idProduct)  {
-        require(msg.sender == rawMaterials);
-        require(products[idProduct].productStatus == ProductStatus(0));
+    modifier onlyParticipant() {
+        require((msg.sender == rawMaterials)||
+                (msg.sender == productor)||
+                (msg.sender == transporter)||
+                (msg.sender == distributor)||
+                (msg.sender == consumer));
         _;
     }
-
-    modifier onlyProductor(uint256 idProduct) {
-        require(msg.sender == productor);
-        require(products[idProduct].productStatus == ProductStatus(2));
-        _;
-    }
-
-    modifier onlyTransporter(uint256 idProduct) {
-        require(msg.sender == transporter);
-        require(products[idProduct].productStatus == ProductStatus(4));
-        _;
-    }
-    modifier onlyDistributor(uint256 idProduct) {
-        require(msg.sender == distributor);
-        require(products[idProduct].productStatus == ProductStatus(6));
-        _;
-    }
-
-    modifier onlyConsumer(uint256 idProduct) {
-        require(msg.sender == consumer);
-        require(products[idProduct].productStatus == ProductStatus(8));
-        _;
-    }
-
-    function validateProcess(uint256 idProduct)  onlyValidator() {
+    function ProcessValidation(uint256 idProduct)  onlyValidator() {
         uint256 previousStatus = uint256(products[idProduct].productStatus);
         products[idProduct].productStatus = ProductStatus(previousStatus+1);
     }
-
-    function rawMaterialDone(uint256 idProduct)  onlyRawMaterials(idProduct) {
-        products[idProduct].productStatus = ProductStatus.rawMaterials;
+    function processDone (uint256 idProduct) onlyParticipant() {
+        if ((msg.sender == rawMaterials)&&(products[idProduct].productStatus == ProductStatus(0))) {
+            products[idProduct].productStatus = ProductStatus.rawMaterialExtracted;
+        }
+        if ((msg.sender == productor)&&(products[idProduct].productStatus == ProductStatus(2))) {
+            products[idProduct].productStatus = ProductStatus.produced;
+        }
+        if ((msg.sender == transporter)&&(products[idProduct].productStatus == ProductStatus(4))) {
+            products[idProduct].productStatus = ProductStatus.transported;
+        }
+        if ((msg.sender == distributor)&&(products[idProduct].productStatus == ProductStatus(6))) {
+            products[idProduct].productStatus = ProductStatus.distributed;
+        }
+        if ((msg.sender == consumer)&&(products[idProduct].productStatus == ProductStatus(8))) {
+            products[idProduct].productStatus = ProductStatus.consumed;
+        }
+        if ((msg.sender == consumer)&&(products[idProduct].productStatus == ProductStatus(9))) {
+            products[idProduct].productStatus = ProductStatus.recicled;
+        }
     }
-    function production(uint256 idProduct)  onlyProductor(idProduct) {
-        products[idProduct].productStatus = ProductStatus.producted;
-
-    }
-    function transportDone(uint256 idProduct)  onlyTransporter(idProduct) {
-        products[idProduct].productStatus = ProductStatus.transported;
-
-    }
-    function distributionDone(uint256 idProduct)  onlyDistributor(idProduct) {
-        products[idProduct].productStatus = ProductStatus.distributed;
-
-    }
-    function consumptionDone(uint256 idProduct)  onlyConsumer(idProduct) {
-        products[idProduct].productStatus = ProductStatus.consumptionValidated;
-
-    }
-    function recicleDone(uint256 idProduct)  onlyConsumer(idProduct) {
-        products[idProduct].productStatus = ProductStatus.consumptionValidated;
-
-    }
-
-    function TraceabilityOfFairTrade(address _validator, address _rawMaterials, address _productor, address _transporter, address _distributor, address _consumer)  {
+    function TraceabilityOfFairTrade (address _validator, address _rawMaterials, address _productor, address _transporter, address _distributor, address _consumer)  {
         owner = msg.sender;
         validator = _validator;
         rawMaterials = _rawMaterials;
@@ -92,11 +74,32 @@ contract TraceabilityOfFairTrade {
         consumer = _consumer;
         idProductIndex = 0;
     }
-    function newProduct(string _productName)  returns (uint256 _idProduct) {
+    function newProduct (string _productName)  returns (uint256 _idProduct) {
         _idProduct = idProductIndex + 1;
         products[_idProduct].productName = _productName;
         products[_idProduct].productStatus = ProductStatus(0);
         return (_idProduct);
+    }
+    function getProductStatus (uint256 _idProduct)  returns (uint256 _productStatus) {
+        _productStatus = uint256(products[_idProduct].productStatus);
+        return (_productStatus);
+    }
+    function getProductName (uint256 _idProduct)  returns (string _productName) {
+        _productName = products[_idProduct].productName;
+        return (_productName);
+    }
+    function getProduct (uint256 _idProduct)  returns (string _productName, uint256 _productStatus) {
+        _productName = products[_idProduct].productName;
+        _productStatus = uint256(products[_idProduct].productStatus);
+        return (_productName,_productStatus);
+    }
+    function getNumberOfProducts (uint256 _idProduct) returns (uint _numberOfProducts) {
+        _numberOfProducts = idProductIndex;
+        return _numberOfProducts;
+    }
+    function getNumberOfProductsByState (uint256 _idProduct) returns (uint _numberOfProducts) {
+        uint256 count;
+        return _numberOfProducts;
     }
 
 }
