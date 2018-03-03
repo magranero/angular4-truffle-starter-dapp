@@ -117,7 +117,7 @@ export class AppComponent {
         })
         .catch(e => {
           console.log(e);
-          this.setStatus('Error getting balance; see log.');
+          this.setStatus('');
         });
     };
 
@@ -126,10 +126,7 @@ export class AppComponent {
   };
 
   sendProduct = () => {
-    const amount = this.sendingProduct;
-    const receiver = this.state;
     let track;
-
     this.Tracking
       .deployed()
       .then(instance => {
