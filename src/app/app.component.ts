@@ -1,7 +1,7 @@
 import { Component, HostListener, NgZone } from '@angular/core';
 const Web3 = require('web3');
 const contract = require('truffle-contract');
-const metaincoinArtifacts = require('../../build/contracts/MetaCoin.json');
+const traceabilityArtifacts = require('../../build/contracts/Traceability.json');
 import { canBeNumber } from '../util/validation';
 
 declare var window: any;
@@ -12,6 +12,7 @@ declare var window: any;
 })
 export class AppComponent {
   MetaCoin = contract(metaincoinArtifacts);
+  Traceability = contract(traceabilityArtifacts);
 
   // TODO add proper types these variables
   account: any;
@@ -20,6 +21,7 @@ export class AppComponent {
 
   balance: number;
   sendingAmount: number;
+  productName: string;
   recipientAddress: string;
   status: string;
   canBeNumber = canBeNumber;
@@ -56,6 +58,7 @@ export class AppComponent {
   onReady = () => {
     // Bootstrap the MetaCoin abstraction for Use.
     this.MetaCoin.setProvider(this.web3.currentProvider);
+    this.Traceability.setProvider(this.web3.currentProvider);
 
     // Get the initial account balance so it can be displayed.
     this.web3.eth.getAccounts((err, accs) => {
@@ -98,7 +101,22 @@ export class AppComponent {
         console.log(e);
         this.setStatus('Error getting balance; see log.');
       });
-  };
+      this.Traceability
+        .deployed()
+        .then(instance => {
+          meta = instance;
+          return meta.getBalance.call(this.account, {
+            from: this.account
+          });
+        })
+        .then(value => {
+          this.balance = value;
+        })
+        .catch(e => {
+          console.log(e);
+          this.setStatus('Error getting balance; see log.');
+        });
+    };
 
   setStatus = message => {
     this.status = message;
@@ -121,6 +139,28 @@ export class AppComponent {
       })
       .then(() => {
         this.setStatus('Transaction complete!');
+        this.refreshBalance();
+      })
+      .catch(e => {
+        console.log(e);
+        this.setStatus('Error sending coin; see log.');
+      });
+  };
+
+  getNumberOfProducts = () => {
+    const productName = this.productName;
+    let meta;
+
+    this.setName('Setting the new product... (please wait)');
+
+    this.Traceability
+      .deployed()
+      .then(instance => {
+        meta = instance;
+        return meta.getProduct(productName);
+      })
+      .then(() => {
+        this.setStatus('Product created!');
         this.refreshBalance();
       })
       .catch(e => {
